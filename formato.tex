@@ -1,0 +1,85 @@
+\documentclass[11pt,a4paper]{article}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Paquetes
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[spanish,es-nolayout,es-tabla]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{url}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{ifthen}
+\usepackage[font={small},labelfont={bf,small},
+    justification=centerlast,tablename=Tabla]{caption}
+% -- Tipo de letra
+\usepackage[defaultfam,tabular,lining]{montserrat} 
+    \renewcommand*\oldstylenums[1]{{\fontfamily{Montserrat-TOsF}\selectfont #1}}
+% -- Geometría de página
+\usepackage[a4paper,vmargin=4cm,hmargin=3cm]{geometry}
+% -- Silenciar alerta de everypage
+\usepackage{silence}
+    \WarningsOff[everypage]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Fondo
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[pages=all]{background}
+\backgroundsetup{
+    scale=1,color=black,opacity=1,angle=0,
+    hshift=0mm,
+    vshift=0mm,
+    contents={\includegraphics[width=210mm]{HojaMembretada FCEN.pdf}}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Formato
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% -- Interlineado
+\renewcommand{\baselinestretch}{1.2}
+\renewcommand{\labelitemi}{$\bullet$}
+% -- Columnas para tablas
+\newcolumntype{C}[1]{>{\hspace{0pt}\centering\arraybackslash}m{#1}}
+\newcolumntype{L}[1]{>{\hspace{0pt}\arraybackslash}m{#1}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Datos
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{\vspace{-2cm}\textbf{Reporte de seguimiento de aulas virtuales}}
+\author{Mario Cueva - Coordinador de Aulas Virtuales ECFM}
+\date{Fecha y hora de revisión: <<Fecha>>, <<Hora>>}
+
+\begin{document}
+
+\maketitle
+
+\noindent
+Luego de realizar el seguimiento al aula virtual:
+\begin{itemize}
+\item 
+    \textbf{NRC:} <<NRC>>
+\item 
+    \textbf{Dominio}: <<Dominio>>
+\item 
+    \textbf{Facultad - Carrera}: <<Facultad>> - <<Carrera>>
+\item 
+    \textbf{Docente}: <<Docente>>
+\end{itemize}
+\noindent
+se presenta el siguiente reporte de cumplimiento de los parámetros revisados:
+\begin{center} \small
+\begin{tabular}{@{}L{11cm}c@{}}
+\toprule
+    \textbf{Criterio} & \textbf{Valoración}\\
+\midrule
+    Se utilizan recursos y materiales didácticos variados, de alta calidad e inherentes al contenido de la materia.  & \textbf{<<Recursos>>} \\[5mm]
+    Se evidencia instrumentos de evaluación claros y en relación con el resultado de aprendizaje  & \textbf{<<Evaluación>>} \\[5mm]
+    Se evidencia  la  configuración  de contenidos de aprendizaje   de manera estructurada  & \textbf{<<Estructura>>} \\[5mm]
+    Se evidencia la configuración de la libreta de calificaciones de acuerdo a las fechas establecidas en el calendario académico  & \textbf{<<Calificaciones>>} \\[5mm]
+    Se evidencia  retroalimentación de las actividades planteadas máximo una semana después de asignada la tarea  & \textbf{<<Retroalimentación>>} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+
+\end{document} 
