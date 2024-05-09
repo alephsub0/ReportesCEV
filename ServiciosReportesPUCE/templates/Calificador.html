@@ -1,0 +1,56 @@
+{% extends 'layouts/Tablero.html' %} {% load static %} {% block content %}
+
+<div class="pagetitle">
+  <h1>Generación de reportes para seguimiento de aulas virtuales</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'InicioTablero' %}">Inicio</a></li>
+      <li class="breadcrumb-item active">Generación de reportes para seguimiento de aulas virtuales</li>
+    </ol>
+  </nav>
+</div>
+
+<h2>Calificador con IA</h2>
+<p>Este es un proyecto de calificador con inteligencia artificial.</p>
+
+<form action="{% url 'SeguimientoAulas' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-md-6">
+            <h5>API Key</h5>
+            <p style="display: inline-block;">Ingresa tu API key de OpenAI:</p>
+            <input type="text" name="api_key" id="api_key" placeholder="API Key" style="display: inline-block;">
+        </div>
+        <div class="col-md-6">
+            <h5>Modelo de GPT</h5>
+            <p style="display: inline-block;">Selecciona el modelo de GPT:</p>
+            <select name="modelo" id="modelo" style="display: inline-block;">
+                <option value="gpt-3.5-turbo-0125">GPT-3.5</option>
+                <option value="gpt-4">GPT-4</option>
+                <option value="gpt-4-0125-preview">GPT-4 turbo</option>
+            </select>
+        </div>
+    </div>
+    <br> 
+    <div class="row">
+        <div class="col-md-6">
+            <h5>Subir archivos</h5>
+            <p>Sube el archivo .zip con los exámenes:</p>
+            <input type="file" name="file_ex" id="file_ex" accept=".zip">
+        </div>
+        <div class="col-md-6">
+            <h5>Sube el archivo de califiaciones .csv</h5>
+            <p>Sube el archivo de califiaciones .csv:</p>
+            <input type="file" name="file_gr" id="file_gr" accept=".csv">
+        </div>
+    </div>
+    <br> 
+    <h5>Instrucción del examen</h5>
+    <p>Escribe la instrucción del examen:</p>
+    <textarea name="instruccion" id="instruccion" cols="100" rows="3"></textarea>
+
+    <br> 
+    <input type="submit" value="Enviar">
+</form>
+
+{% endblock %}
