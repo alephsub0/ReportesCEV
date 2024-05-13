@@ -26,7 +26,7 @@ def SeguimientoAulas(request):
             # ArchivoHojaMembretada = form.cleaned_data["ArchivoHojaMembretada"]
             NombreCoordinador = form.cleaned_data["NombreCoordinador"]
 
-            archivo = ProcesarSeguimiento(ArchivoEXCEL,NombreCoordinador)
+            archivo = procesarSeguimiento(ArchivoEXCEL,NombreCoordinador)
 
             response = HttpResponse(archivo, content_type='application/zip')
             

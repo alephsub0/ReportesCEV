@@ -1,25 +1,73 @@
-# importo pandas
+# Librerías necesarias
 import pandas as pd
-
-# importo os
 import os
+import argparse
 
-# prueba
+## Constantes
 
+# Directorio donde se guardan los archivos temporales
 Directorio = "/srv/www/servicios/tmp/"
 
+## Funciones
 
-def GenerarCodigo():
+def generarCodigo():
+    """
+    Genera un código único con la fecha y hora actual.
+
+    Returns:
+        str: Código único con la fecha y hora actual.
+    """
     return pd.Timestamp.now().strftime("%Y%m%d%H%M%S")
 
+def reemplazarDatos(texto, df_revision, n):
+    """
+    Reemplaza los marcadores de posición en un texto con los valores correspondientes
+    de un DataFrame en una fila específica.
 
-def ProcesarSeguimiento(archivo_revision, NombreCoordinador):
+    Args:
+    texto (str): El texto que contiene los marcadores de posición a reemplazar.
+    df_revision (DataFrame): El DataFrame que contiene los datos para el reemplazo.
+    n (int): El índice de la fila en el DataFrame de donde se tomarán los datos.
 
-    # Creamos un idtemporal para generar los archivos con la fecha y hora
-    seguimiento = GenerarCodigo()
+    Returns:
+    str: El texto con los marcadores de posición reemplazados por los valores correspondientes.
+    """
+    # Diccionario de sustituciones
+    reemplazos = {
+        "<<Docente>>": df_revision["Nombre Completo"][n],
+        "<<NRC>>": str(int(df_revision["NRC"][n])),
+        "<<Dominio>>": df_revision["Dominio"][n],
+        "<<Facultad>>": str(df_revision["Facultad"][n]),
+        "<<Carrera>>": str(df_revision["Carrera"][n]),
+        "<<Recursos>>": df_revision["Recursos"][n],
+        "<<Evaluación>>": df_revision["Evaluación"][n],
+        "<<Estructura>>": df_revision["Estructura"][n],
+        "<<Calificaciones>>": df_revision["Calificaciones"][n],
+        "<<Retroalimentación>>": df_revision["Retroalimentación"][n],
+        "<<Fecha>>": df_revision["Fecha"][n].strftime("%m/%d/%Y") if hasattr(df_revision["Fecha"][n], 'strftime') else str(df_revision["Fecha"][n]),
+        "<<Hora>>": str(df_revision["Hora"][n])
+    }
 
+    # Reemplazo de texto usando el diccionario
+    for placeholder, valor in reemplazos.items():
+        texto = texto.replace(placeholder, valor)
+
+    return texto
+
+def leerArchivoRevision(archivo_revision):
+    """
+    Lee el archivo de revisión y genera un DataFrame con los datos necesarios.
+
+    Args:
+    archivo_revision (str): La ruta al archivo de revisión en formato Excel.
+
+    Returns:
+    DataFrame: Un DataFrame con los datos de la revisión.
+    """
+    # Leemos el archivo de revisión
     df_revision = pd.read_excel(archivo_revision, sheet_name="Observación de aulas")
-    # renombro las columnas
+
+    # Renombramos las columnas
     df_revision.columns = [
         "Dominio",
         "Facultad",
@@ -35,112 +83,98 @@ def ProcesarSeguimiento(archivo_revision, NombreCoordinador):
         "Calificaciones",
         "Retroalimentación",
     ]
-    # Elimino todos los registro que en Nombre tengan NaN
+
+    # Eliminamos todos los registros que tengan NaN en la columna Nombre
     df_revision = df_revision.dropna(subset=["Nombre"])
 
-    # concateno los nombres y apellidos
-    df_revision["Nombre Completo"] = (
-        df_revision["Apellidos"] + " " + df_revision["Nombre"]
-    )
-    # genero una lista con los nombres de los docentes sin repetir
+    # Concatenamos los nombres y apellidos
+    df_revision["Nombre Completo"] = df_revision["Apellidos"] + " " + df_revision["Nombre"]
+
+    return df_revision
+
+def procesarSeguimiento(archivo_revision, nombreCoordinador):
+    """
+    Procesa el seguimiento de aulas basado en un archivo de revisión y genera archivos .tex
+    y un archivo .zip con los resultados.
+
+    Parámetros:
+    archivo_revision (str): La ruta al archivo de revisión en formato Excel.
+    nombreCoordinador (str): El nombre del coordinador a incluir en los archivos generados.
+    Directorio (str): El directorio base donde se crearán las carpetas y archivos.
+
+    Retorna:
+    bytes: El contenido del archivo .zip generado.
+    """
+    # Creamos un código temporal para generar los archivos con la fecha y hora
+    seguimiento = generarCodigo()
+
+    # Generamos el DataFrame con los datos de revisión
+    df_revision = leerArchivoRevision(archivo_revision)
+
+    # Generamos una lista con los nombres de los docentes sin repetir
     lista_docentes = df_revision["Nombre Completo"].unique()
-    # creo una carpeta por cada docente, dentro de la carpeta Seguimiento
 
+    # Creamos una carpeta por cada docente, dentro de la carpeta Seguimiento
     for docente in lista_docentes:
-        # directorio para la creación de la carpeta
-        dir_carpeta = os.path.join(Directorio, f"Seguimiento{seguimiento}/" + docente)
-
+        # Directorio para la creación de la carpeta
+        dir_carpeta = os.path.join(Directorio, f"Seguimiento{seguimiento}/{docente}")
         if not os.path.exists(dir_carpeta):
             os.makedirs(dir_carpeta)
 
-    # genero una función que me permita reemplazar los datos de la tabla de evaluación
-    def reemplazar(texto, n):
-        # reemplazo la información de la tabla de revision
-        # Nombre docente
-        texto = texto.replace("<<Docente>>", df_revision["Nombre Completo"][n])
-        # NRC
-        texto = texto.replace("<<NRC>>", str(int(df_revision["NRC"][n])))
-        # Dominio
-        texto = texto.replace("<<Dominio>>", df_revision["Dominio"][n])
-        # Facultad
-        texto = texto.replace("<<Facultad>>", str(df_revision["Facultad"][n]))
-        # Carrera
-        texto = texto.replace("<<Carrera>>", str(df_revision["Carrera"][n]))
-        # Recursos
-        texto = texto.replace("<<Recursos>>", df_revision["Recursos"][n])
-        # Evaluación
-        texto = texto.replace("<<Evaluación>>", df_revision["Evaluación"][n])
-        # Estructura
-        texto = texto.replace("<<Estructura>>", df_revision["Estructura"][n])
-        # Calificaciones
-        texto = texto.replace("<<Calificaciones>>", df_revision["Calificaciones"][n])
-        # Retroalimentación
-        texto = texto.replace(
-            "<<Retroalimentación>>", df_revision["Retroalimentación"][n]
-        )
-        # Fecha
-        try:
-            texto = texto.replace(
-                "<<Fecha>>", df_revision["Fecha"][n].strftime("%m/%d/%Y")
-            )
-        except:
-            texto = texto.replace("<<Fecha>>", str(df_revision["Fecha"][n]))
-        # Hora
-        texto = texto.replace("<<Hora>>", str(df_revision["Hora"][n]))
-        # Coordinador
-        texto = texto.replace("<<Coordinador>>", NombreCoordinador)
-        return texto
+    # Leemos la plantilla
+    texto_base = open("formato.tex", "r", encoding="utf-8").read()
 
-    # Recorro cada fila de los datos
+    # Reemplazo del nombre del coordinador
+    texto_base = texto_base.replace("<<Coordinador>>", nombreCoordinador)
+
+    # Recorremos cada fila de los datos
     for n in range(df_revision.shape[0]):
-        # for n in range(1):
-        # Genero un archivo con el nombre
-        archivo = open(
-            Directorio
-            + f"Seguimiento{seguimiento}/{df_revision['Nombre Completo'][n]}/{int(df_revision['NRC'][n])}-Seguimiento{seguimiento}.tex",
-            "w",
-            encoding="utf-8",
-        )
-        # Abro el archivo de formato
-        formato = open("formato.tex", "r", encoding="utf-8")
-        # Tomo el texto del formato
-        texto = formato.read()
-        # Reemplazo los datos de la tabla de evaluación
-        texto = reemplazar(texto, n)
-        # Escribo en el nuevo archivo el texto del formato reemplazando los datos
-        archivo.write(texto)
-        # Cierro los archivos
-        archivo.close()
-        formato.close()
-        # compilo el archivo tex
-        # dir_carpeta = Directorio+f"Seguimiento{seguimiento}/{df_revision['Nombre Completo'][n]}"
-        # utilizamos join para unir Directorio con el texto anterior
-        dir_carpeta_compilacion = os.path.join(
-            Directorio, f"Seguimiento{seguimiento}/{df_revision['Nombre Completo'][n]}"
-        )
-        dir_archivo = (
-            Directorio
-            + f"Seguimiento{seguimiento}/{df_revision['Nombre Completo'][n]}/{int(df_revision['NRC'][n])}-Seguimiento{seguimiento}"
-        )
-        os.system(
-            f'pdflatex -output-directory="{dir_carpeta_compilacion}" "{dir_archivo}.tex"'
-        )
-        # elimino los archivos auxiliares
-        os.remove(f"{dir_archivo}.aux")
-        os.remove(f"{dir_archivo}.log")
-        os.remove(f"{dir_archivo}.tex")
+        # Generamos un archivo con el nombre del docente y NRC
+        nombre_archivo = f"{int(df_revision['NRC'][n])}-Seguimiento{seguimiento}.tex"
+        ruta_archivo = os.path.join(Directorio, f"Seguimiento{seguimiento}/{df_revision['Nombre Completo'][n]}/{nombre_archivo}")
+
+        with open(ruta_archivo, "w", encoding="utf-8") as archivo:
+            # Reemplazamos los datos en el texto base
+            texto = reemplazarDatos(texto_base, df_revision, n)
+            # Escribimos el texto en el nuevo archivo
+            archivo.write(texto)
+
+        # Directorios para compilación y archivo
+        dir_carpeta_compilacion = os.path.join(Directorio, f"Seguimiento{seguimiento}/{df_revision['Nombre Completo'][n]}")
+        dir_archivo = os.path.join(dir_carpeta_compilacion, f"{int(df_revision['NRC'][n])}-Seguimiento{seguimiento}")
+
+        # Compilamos el archivo tex
+        os.system(f'pdflatex -output-directory="{dir_carpeta_compilacion}" "{dir_archivo}.tex"')
+
+        # Eliminamos los archivos auxiliares
+        for ext in [".aux", ".log", ".tex"]:
+            os.remove(f"{dir_archivo}{ext}")
 
     # Creamos un archivo zip con todo lo generado
-    os.system(
-        f"zip -r {Directorio}Seguimiento{seguimiento}.zip {Directorio}Seguimiento{seguimiento}"
-    )
-
+    zip_path = os.path.join(Directorio, f"Seguimiento{seguimiento}.zip")
+    os.system(f"zip -r {zip_path} {os.path.join(Directorio, f'Seguimiento{seguimiento}')}")
+    
     # Eliminamos la carpeta original
-    os.system(f"rm -rf {Directorio}Seguimiento{seguimiento}")
+    os.system(f"rm -rf {os.path.join(Directorio, f'Seguimiento{seguimiento}')}")
 
     # Leemos el archivo zip
-    with open(Directorio + f"Seguimiento{seguimiento}.zip", "rb") as f:
+    with open(zip_path, "rb") as f:
         zip_file = f.read()
 
     # Regresamos el archivo zip
     return zip_file
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Procesar seguimiento de aulas.")
+    parser.add_argument('archivo_revision', type=str, help='Ruta al archivo de revisión en formato Excel')
+    parser.add_argument('nombreCoordinador', type=str, help='Nombre del coordinador')
+
+    args = parser.parse_args()
+
+    zip_file = procesarSeguimiento(args.archivo_revision, args.nombreCoordinador)
+
+    # Guardar el archivo zip en la ubicación deseada
+    zip_output_path = os.path.join(args.Directorio, "Seguimiento.zip")
+    with open(zip_output_path, "wb") as f:
+        f.write(zip_file)
