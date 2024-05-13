@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponse, redirect
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required,user_passes_test
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render
@@ -7,12 +7,10 @@ from .forms import FormularioSeguimientoAulas,FormularioArchivosCalificador
 import pandas as pd
 from .funciones import ProcesarSeguimiento
 
+def is_member_puce(user):
+    return user.groups.filter(name="PUCE_Basico").exists()
 
-# Create your views here.
-@login_required
-def Inicio(request):
-    return render(request, 'InicioTablero.html')
-
+@user_passes_test(is_member_puce)
 @login_required
 def SeguimientoAulas(request):
     if request.method == "GET":
@@ -25,11 +23,13 @@ def SeguimientoAulas(request):
         form = FormularioSeguimientoAulas(request.POST, request.FILES)
         if form.is_valid():
             ArchivoEXCEL = form.cleaned_data["ArchivoSeguimiento"]
+            # ArchivoHojaMembretada = form.cleaned_data["ArchivoHojaMembretada"]
+            NombreCoordinador = form.cleaned_data["NombreCoordinador"]
 
-            archivo = ProcesarSeguimiento(ArchivoEXCEL)
+            archivo = ProcesarSeguimiento(ArchivoEXCEL,NombreCoordinador)
 
             response = HttpResponse(archivo, content_type='application/zip')
-            # Define el nombre del archivo ZIP que se descargará
+            
             zip_filename = 'archivo_comprimido.zip'
             response['Content-Disposition'] = f'attachment; filename="{zip_filename}"'
             return response

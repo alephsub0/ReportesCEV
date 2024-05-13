@@ -29,3 +29,5 @@ class FormularioArchivosCalificador(forms.Form):
 
 class FormularioSeguimientoAulas(forms.Form):
     ArchivoSeguimiento = forms.FileField()
+    # ArchivoHojaMembretada = forms.FileField()
+    NombreCoordinador = forms.CharField(max_length=100, required=True)
