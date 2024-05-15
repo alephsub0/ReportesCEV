@@ -5,7 +5,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render
 from .forms import FormularioSeguimientoAulas,FormularioArchivosCalificador
 import pandas as pd
-from .funciones import ProcesarSeguimiento
+from .funciones import procesar_seguimiento
 
 def is_member_puce(user):
     return user.groups.filter(name="PUCE_Basico").exists()
@@ -26,7 +26,7 @@ def SeguimientoAulas(request):
             # ArchivoHojaMembretada = form.cleaned_data["ArchivoHojaMembretada"]
             NombreCoordinador = form.cleaned_data["NombreCoordinador"]
 
-            archivo = procesarSeguimiento(ArchivoEXCEL,NombreCoordinador)
+            archivo = procesar_seguimiento(ArchivoEXCEL,NombreCoordinador)
 
             response = HttpResponse(archivo, content_type='application/zip')
             
