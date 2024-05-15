@@ -160,11 +160,14 @@ def procesar_seguimiento(archivo_revision, nombre_coordinador):
             f"{int(df_revision['NRC'][n])}-Seguimiento{seguimiento}",
         )
 
-        # Compilamos el archivo tex
+        # Compilamos el archivo tex (2 veces)
         os.system(
             f'pdflatex -output-directory="{dir_carpeta_compilacion}" "{dir_archivo}.tex"'
         )
-
+        os.system(
+            f'pdflatex -output-directory="{dir_carpeta_compilacion}" "{dir_archivo}.tex"'
+        )
+        
         # Eliminamos los archivos auxiliares
         for ext in [".aux", ".log", ".tex"]:
             os.remove(f"{dir_archivo}{ext}")
