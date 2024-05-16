@@ -1,13 +1,15 @@
 # Librerías necesarias
 import pandas as pd
 import os
+import shutil
 import argparse
+from django.conf import settings
 
 # Constantes
 
 # Directorio donde se guardan los archivos temporales
-DIRECTORIO = "/srv/www/servicios/tmp/"
-
+DIRECTORIO = settings.DIRECTORIO_TEMPORAL_REPORTES_CEV
+MEDIA_ROOT = settings.MEDIA_ROOT
 # Funciones
 
 
@@ -102,7 +104,7 @@ def leer_archivo_revision(archivo_revision):
     return df_revision
 
 
-def procesar_seguimiento(archivo_revision, nombre_coordinador):
+def procesar_seguimiento(archivo_revision, nombre_coordinador,seguimiento= generar_codigo()):
     """
     Procesa el seguimiento de aulas basado en un archivo de revisión y genera archivos .tex
     y un archivo .zip con los resultados.
@@ -173,20 +175,24 @@ def procesar_seguimiento(archivo_revision, nombre_coordinador):
             os.remove(f"{dir_archivo}{ext}")
 
     # Creamos un archivo zip con todo lo generado
-    zip_path = os.path.join(DIRECTORIO, f"Seguimiento{seguimiento}.zip")
+    zip_path_full = os.path.join(MEDIA_ROOT,'comprimidos_cev', f"Seguimiento{seguimiento}.zip")
     os.system(
-        f"zip -r {zip_path} {os.path.join(DIRECTORIO, f'Seguimiento{seguimiento}')}"
+        f"zip -r {zip_path_full} {os.path.join(DIRECTORIO, f'Seguimiento{seguimiento}')}"
     )
 
+    zip_path = os.path.join('comprimidos_cev', f"Seguimiento{seguimiento}.zip")
+
     # Eliminamos la carpeta original
-    os.system(f"rm -rf {os.path.join(DIRECTORIO, f'Seguimiento{seguimiento}')}")
+    # os.system(f"rm -rf {os.path.join(DIRECTORIO, f'Seguimiento{seguimiento}')}")
+    shutil.rmtree(os.path.join(DIRECTORIO, f'Seguimiento{seguimiento}'))
 
-    # Leemos el archivo zip
-    with open(zip_path, "rb") as f:
-        zip_file = f.read()
+    # # Leemos el archivo zip
+    # with open(zip_path, "rb") as f:
+    #     zip_file = f.read()
 
-    # Regresamos el archivo zip
-    return zip_file
+    # # Regresamos el archivo zip
+    # return zip_file
+    return zip_path
 
 
 if __name__ == "__main__":
