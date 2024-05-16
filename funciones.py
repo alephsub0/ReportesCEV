@@ -132,8 +132,14 @@ def procesar_seguimiento(archivo_revision, nombre_coordinador,seguimiento= gener
         if not os.path.exists(dir_carpeta):
             os.makedirs(dir_carpeta)
 
+    # Directorio de la plantilla 
+    directorio_plantilla = settings.BASE_DIR
+
+    # Ruta plantilla
+    ruta_plantilla = os.path.join(directorio_plantilla, "formato.tex")
+
     # Leemos la plantilla
-    texto_base = open("formato.tex", "r", encoding="utf-8").read()
+    texto_base = open(ruta_plantilla, "r", encoding="utf-8").read()
 
     # Reemplazo del nombre del coordinador
     texto_base = texto_base.replace("<<Coordinador>>", nombre_coordinador)
