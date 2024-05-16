@@ -141,7 +141,7 @@ def procesar_seguimiento(archivo_revision, nombre_coordinador,seguimiento= gener
     # Recorremos cada fila de los datos
     for n in range(df_revision.shape[0]):
         # Generamos un archivo con el nombre del docente y NRC
-        nombre_archivo = f"{int(df_revision['NRC'][n])}-Seguimiento{seguimiento}.tex"
+        nombre_archivo = f"{int(df_revision['NRC'][n])}-Seguimiento.tex"
         ruta_archivo = os.path.join(
             DIRECTORIO,
             f"Seguimiento{seguimiento}/{df_revision['Nombre Completo'][n]}/{nombre_archivo}",
@@ -159,7 +159,7 @@ def procesar_seguimiento(archivo_revision, nombre_coordinador,seguimiento= gener
         )
         dir_archivo = os.path.join(
             dir_carpeta_compilacion,
-            f"{int(df_revision['NRC'][n])}-Seguimiento{seguimiento}",
+            f"{int(df_revision['NRC'][n])}-Seguimiento",
         )
 
         # Compilamos el archivo tex (2 veces)
@@ -174,17 +174,21 @@ def procesar_seguimiento(archivo_revision, nombre_coordinador,seguimiento= gener
         for ext in [".aux", ".log", ".tex"]:
             os.remove(f"{dir_archivo}{ext}")
 
+    # Cambiamos al directorio temporal con la carpeta Seguimiento
+    os.chdir(os.path.join(DIRECTORIO, f"Seguimiento{seguimiento}") )
+
+
     # Creamos un archivo zip con todo lo generado
     zip_path_full = os.path.join(MEDIA_ROOT,'comprimidos_cev', f"Seguimiento{seguimiento}.zip")
     os.system(
-        f"zip -r {zip_path_full} {os.path.join(DIRECTORIO, f'Seguimiento{seguimiento}')}"
+        f"zip -r {zip_path_full} *"
     )
 
     zip_path = os.path.join('comprimidos_cev', f"Seguimiento{seguimiento}.zip")
 
     # Eliminamos la carpeta original
     # os.system(f"rm -rf {os.path.join(DIRECTORIO, f'Seguimiento{seguimiento}')}")
-    shutil.rmtree(os.path.join(DIRECTORIO, f'Seguimiento{seguimiento}'))
+    # shutil.rmtree(os.path.join(DIRECTORIO, f'Seguimiento{seguimiento}'))
 
     # # Leemos el archivo zip
     # with open(zip_path, "rb") as f:
