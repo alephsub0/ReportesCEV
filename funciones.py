@@ -1,7 +1,9 @@
 # Librerías necesarias
 import pandas as pd
 import os
+import shutil
 import argparse
+import zipfile
 
 # Constantes
 
@@ -192,22 +194,25 @@ def procesar_seguimiento(archivo_revision, nombre_coordinador, directorio = DIRE
         for ext in [".aux", ".log", ".tex"]:
             os.remove(f"{dir_archivo}{ext}")
 
-     # Creamos un archivo zip con todo lo generado
+    # Creamos la ruta del archivo zip
     zip_path = os.path.join(directorio, f"Seguimiento-{seguimiento}.zip")
-    print(f"zip -r {zip_path} {os.path.join(directorio, f'Seguimiento-{seguimiento}')}")
-    os.system(
-        f"zip -r {zip_path} {os.path.join(directorio, f'Seguimiento-{seguimiento}')}"
-    )
 
-    # Eliminamos la carpeta original
-    os.system(f"rm -r {os.path.join(directorio, f'Seguimiento-{seguimiento}')}")
+    # Creamos la ruta de la carpeta a comprimir
+    carpeta_a_comprimir = os.path.join(directorio, f"Seguimiento-{seguimiento}")
 
-    # Leemos el archivo zip
-    with open(zip_path, "rb") as f:
-        zip_file = f.read()
+    # Creamos un archivo zip
+    with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+        for root, _, files in os.walk(carpeta_a_comprimir):
+            for file in files:
+                file_path = os.path.join(root, file)
+                # Agregar el archivo al zip con la ruta relativa a la carpeta
+                zipf.write(file_path, os.path.relpath(file_path, carpeta_a_comprimir))
+
+    # Eliminar la carpeta original y su contenido
+    shutil.rmtree(carpeta_a_comprimir)
 
     # Regresamos el archivo zip
-    return zip_file
+    return zip_path
 
 
 if __name__ == "__main__":
