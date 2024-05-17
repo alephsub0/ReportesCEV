@@ -73,6 +73,14 @@ def leer_archivo_revision(archivo_revision):
     # Leemos el archivo de revisión
     df_revision = pd.read_excel(archivo_revision, sheet_name="Observación de aulas")
 
+    # Reviso que tenga el número correcto de columnas
+    if not os.path.exists(archivo_revision):
+        raise FileNotFoundError(f"No se encontró el archivo de revisión '{archivo_revision}'.")
+    if df_revision.shape[1] != 13:
+        raise ValueError(
+            f"El archivo de revisión debe tener 13 columnas, pero tiene {df_revision.shape[1]}."
+        )  
+
     # Renombramos las columnas
     df_revision.columns = [
         "Dominio",
@@ -114,6 +122,14 @@ def procesar_seguimiento(archivo_revision, nombre_coordinador, directorio = DIRE
     Returns:
     bytes: El contenido del archivo .zip generado.
     """
+    # Revisamos que existan los archivos necesarios
+    if not os.path.exists("formato.tex"):
+        raise FileNotFoundError("No se encontró el archivo 'formato.tex'.")
+    if not os.path.exists("HojaMembretadaCEV.pdf"):
+        raise FileNotFoundError("No se encontró el archivo 'HojaMembretadaCEV.pdf'.")
+    if not os.path.exists(archivo_revision):
+        raise FileNotFoundError(f"No se encontró el archivo de revisión '{archivo_revision}'.")
+
     # Creamos un código temporal para generar los archivos con la fecha y hora
     seguimiento = generar_codigo()
 
@@ -161,12 +177,16 @@ def procesar_seguimiento(archivo_revision, nombre_coordinador, directorio = DIRE
         )
 
         # Compilamos el archivo tex (2 veces)
-        os.system(
-            f'pdflatex -output-directory="{dir_carpeta_compilacion}" "{dir_archivo}.tex"'
-        )
-        os.system(
-            f'pdflatex -output-directory="{dir_carpeta_compilacion}" "{dir_archivo}.tex"'
-        )
+        try:
+            os.system(
+                f'pdflatex -output-directory="{dir_carpeta_compilacion}" "{dir_archivo}.tex"'
+            )
+            os.system(
+                f'pdflatex -output-directory="{dir_carpeta_compilacion}" "{dir_archivo}.tex"'
+            )
+        except Exception as e:
+            print(f"Error al compilar el archivo {dir_archivo}.")
+            print(e)
         
         # Eliminamos los archivos auxiliares
         for ext in [".aux", ".log", ".tex"]:
@@ -174,12 +194,13 @@ def procesar_seguimiento(archivo_revision, nombre_coordinador, directorio = DIRE
 
      # Creamos un archivo zip con todo lo generado
     zip_path = os.path.join(directorio, f"Seguimiento-{seguimiento}.zip")
+    print(f"zip -r {zip_path} {os.path.join(directorio, f'Seguimiento-{seguimiento}')}")
     os.system(
         f"zip -r {zip_path} {os.path.join(directorio, f'Seguimiento-{seguimiento}')}"
     )
 
     # Eliminamos la carpeta original
-    os.system(f"rm -rf {os.path.join(directorio, f'Seguimiento-{seguimiento}')}")
+    os.system(f"rm -r {os.path.join(directorio, f'Seguimiento-{seguimiento}')}")
 
     # Leemos el archivo zip
     with open(zip_path, "rb") as f:
