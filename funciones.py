@@ -1,15 +1,12 @@
 # Librerías necesarias
 import pandas as pd
 import os
-import shutil
 import argparse
-from django.conf import settings
 
 # Constantes
 
 # Directorio donde se guardan los archivos temporales
-DIRECTORIO = settings.DIRECTORIO_TEMPORAL_REPORTES_CEV
-MEDIA_ROOT = settings.MEDIA_ROOT
+DIRECTORIO = "."
 # Funciones
 
 
@@ -104,16 +101,17 @@ def leer_archivo_revision(archivo_revision):
     return df_revision
 
 
-def procesar_seguimiento(archivo_revision, nombre_coordinador,seguimiento= generar_codigo()):
+def procesar_seguimiento(archivo_revision, nombre_coordinador, directorio = DIRECTORIO):
     """
     Procesa el seguimiento de aulas basado en un archivo de revisión y genera archivos .tex
     y un archivo .zip con los resultados.
 
-    Parámetros:
+    Args:
     archivo_revision (str): La ruta al archivo de revisión en formato Excel.
     nombre_coordinador (str): El nombre del coordinador a incluir en los archivos generados.
+    directorio (str): Directorio donde se generará el seguimiento.
 
-    Retorna:
+    Returns:
     bytes: El contenido del archivo .zip generado.
     """
     # Creamos un código temporal para generar los archivos con la fecha y hora
@@ -128,18 +126,12 @@ def procesar_seguimiento(archivo_revision, nombre_coordinador,seguimiento= gener
     # Creamos una carpeta por cada docente, dentro de la carpeta Seguimiento
     for docente in lista_docentes:
         # Directorio para la creación de la carpeta
-        dir_carpeta = os.path.join(DIRECTORIO, f"Seguimiento{seguimiento}/{docente}")
+        dir_carpeta = os.path.join(directorio, f"Seguimiento-{seguimiento}/{docente}")
         if not os.path.exists(dir_carpeta):
             os.makedirs(dir_carpeta)
 
-    # Directorio de la plantilla 
-    directorio_plantilla = settings.BASE_DIR
-
-    # Ruta plantilla
-    ruta_plantilla = os.path.join(directorio_plantilla, "formato.tex")
-
     # Leemos la plantilla
-    texto_base = open(ruta_plantilla, "r", encoding="utf-8").read()
+    texto_base = open("formato.tex", "r", encoding="utf-8").read()
 
     # Reemplazo del nombre del coordinador
     texto_base = texto_base.replace("<<Coordinador>>", nombre_coordinador)
@@ -149,8 +141,8 @@ def procesar_seguimiento(archivo_revision, nombre_coordinador,seguimiento= gener
         # Generamos un archivo con el nombre del docente y NRC
         nombre_archivo = f"{int(df_revision['NRC'][n])}-Seguimiento.tex"
         ruta_archivo = os.path.join(
-            DIRECTORIO,
-            f"Seguimiento{seguimiento}/{df_revision['Nombre Completo'][n]}/{nombre_archivo}",
+            directorio,
+            f"Seguimiento-{seguimiento}/{df_revision['Nombre Completo'][n]}/{nombre_archivo}",
         )
 
         with open(ruta_archivo, "w", encoding="utf-8") as archivo:
@@ -161,7 +153,7 @@ def procesar_seguimiento(archivo_revision, nombre_coordinador,seguimiento= gener
 
         # Directorios para compilación y archivo
         dir_carpeta_compilacion = os.path.join(
-            DIRECTORIO, f"Seguimiento{seguimiento}/{df_revision['Nombre Completo'][n]}"
+            directorio, f"Seguimiento-{seguimiento}/{df_revision['Nombre Completo'][n]}"
         )
         dir_archivo = os.path.join(
             dir_carpeta_compilacion,
@@ -180,29 +172,21 @@ def procesar_seguimiento(archivo_revision, nombre_coordinador,seguimiento= gener
         for ext in [".aux", ".log", ".tex"]:
             os.remove(f"{dir_archivo}{ext}")
 
-    # Cambiamos al directorio temporal con la carpeta Seguimiento
-    os.chdir(os.path.join(DIRECTORIO, f"Seguimiento{seguimiento}") )
-
-
-    # Creamos un archivo zip con todo lo generado
-    zip_path_full = os.path.join(MEDIA_ROOT,'comprimidos_cev', f"Seguimiento{seguimiento}.zip")
+     # Creamos un archivo zip con todo lo generado
+    zip_path = os.path.join(directorio, f"Seguimiento-{seguimiento}.zip")
     os.system(
-        f"zip -r {zip_path_full} *"
+        f"zip -r {zip_path} {os.path.join(directorio, f'Seguimiento-{seguimiento}')}"
     )
 
-    zip_path = os.path.join('comprimidos_cev', f"Seguimiento{seguimiento}.zip")
-
     # Eliminamos la carpeta original
-    # os.system(f"rm -rf {os.path.join(DIRECTORIO, f'Seguimiento{seguimiento}')}")
-    # shutil.rmtree(os.path.join(DIRECTORIO, f'Seguimiento{seguimiento}'))
+    os.system(f"rm -rf {os.path.join(directorio, f'Seguimiento-{seguimiento}')}")
 
-    # # Leemos el archivo zip
-    # with open(zip_path, "rb") as f:
-    #     zip_file = f.read()
+    # Leemos el archivo zip
+    with open(zip_path, "rb") as f:
+        zip_file = f.read()
 
-    # # Regresamos el archivo zip
-    # return zip_file
-    return zip_path
+    # Regresamos el archivo zip
+    return zip_file
 
 
 if __name__ == "__main__":
