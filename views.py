@@ -186,6 +186,6 @@ def DescargarReporteSeguimientoAulas(request, identificador_proceso):
 
         # Generamos la respuesta
         response = HttpResponse(contenido, content_type="application/zip")
-        response["Content-Disposition"] = f"attachment; filename=Seguimiento{identificador_proceso}"
+        response["Content-Disposition"] = f"attachment; filename=Seguimiento{identificador_proceso}.zip"
 
         return response
