@@ -77,11 +77,13 @@ def leer_archivo_revision(archivo_revision):
 
     # Reviso que tenga el número correcto de columnas
     if not os.path.exists(archivo_revision):
-        raise FileNotFoundError(f"No se encontró el archivo de revisión '{archivo_revision}'.")
+        raise FileNotFoundError(
+            f"No se encontró el archivo de revisión '{archivo_revision}'."
+        )
     if df_revision.shape[1] != 13:
         raise ValueError(
             f"El archivo de revisión debe tener 13 columnas, pero tiene {df_revision.shape[1]}."
-        )  
+        )
 
     # Renombramos las columnas
     df_revision.columns = [
@@ -111,7 +113,12 @@ def leer_archivo_revision(archivo_revision):
     return df_revision
 
 
-def procesar_seguimiento(archivo_revision, nombre_coordinador, directorio = DIRECTORIO,seguimiento = generar_codigo()):
+def procesar_seguimiento(
+    archivo_revision,
+    nombre_coordinador,
+    directorio=DIRECTORIO,
+    seguimiento=generar_codigo(),
+):
     """
     Procesa el seguimiento de aulas basado en un archivo de revisión y genera archivos .tex
     y un archivo .zip con los resultados.
@@ -130,7 +137,9 @@ def procesar_seguimiento(archivo_revision, nombre_coordinador, directorio = DIRE
     if not os.path.exists("HojaMembretadaCEV.pdf"):
         raise FileNotFoundError("No se encontró el archivo 'HojaMembretadaCEV.pdf'.")
     if not os.path.exists(archivo_revision):
-        raise FileNotFoundError(f"No se encontró el archivo de revisión '{archivo_revision}'.")
+        raise FileNotFoundError(
+            f"No se encontró el archivo de revisión '{archivo_revision}'."
+        )
 
     # Generamos el DataFrame con los datos de revisión
     df_revision = leer_archivo_revision(archivo_revision)
@@ -186,7 +195,7 @@ def procesar_seguimiento(archivo_revision, nombre_coordinador, directorio = DIRE
         except Exception as e:
             print(f"Error al compilar el archivo {dir_archivo}.")
             print(e)
-        
+
         # Eliminamos los archivos auxiliares
         for ext in [".aux", ".log", ".tex"]:
             os.remove(f"{dir_archivo}{ext}")
@@ -198,7 +207,7 @@ def procesar_seguimiento(archivo_revision, nombre_coordinador, directorio = DIRE
     carpeta_a_comprimir = os.path.join(directorio, f"Seguimiento-{seguimiento}")
 
     # Creamos un archivo zip
-    with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+    with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zipf:
         for root, _, files in os.walk(carpeta_a_comprimir):
             for file in files:
                 file_path = os.path.join(root, file)
