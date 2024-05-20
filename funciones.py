@@ -109,7 +109,7 @@ def leer_archivo_revision(archivo_revision):
     return df_revision
 
 
-def procesar_seguimiento(archivo_revision, nombre_coordinador, directorio = DIRECTORIO):
+def procesar_seguimiento(archivo_revision, nombre_coordinador, directorio = DIRECTORIO,seguimiento = generar_codigo()):
     """
     Procesa el seguimiento de aulas basado en un archivo de revisión y genera archivos .tex
     y un archivo .zip con los resultados.
@@ -129,9 +129,6 @@ def procesar_seguimiento(archivo_revision, nombre_coordinador, directorio = DIRE
         raise FileNotFoundError("No se encontró el archivo 'HojaMembretadaCEV.pdf'.")
     if not os.path.exists(archivo_revision):
         raise FileNotFoundError(f"No se encontró el archivo de revisión '{archivo_revision}'.")
-
-    # Creamos un código temporal para generar los archivos con la fecha y hora
-    seguimiento = generar_codigo()
 
     # Generamos el DataFrame con los datos de revisión
     df_revision = leer_archivo_revision(archivo_revision)
@@ -194,9 +191,12 @@ def procesar_seguimiento(archivo_revision, nombre_coordinador, directorio = DIRE
 
      # Creamos un archivo zip con todo lo generado
     zip_path = os.path.join(directorio, f"Seguimiento-{seguimiento}.zip")
-    print(f"zip -r {zip_path} {os.path.join(directorio, f'Seguimiento-{seguimiento}')}")
+    
+    # Cambiamos al directorio donde se encuentran los archivos
+    os.chdir(os.path.join(directorio, f"Seguimiento-{seguimiento}"))
+
     os.system(
-        f"zip -r {zip_path} {os.path.join(directorio, f'Seguimiento-{seguimiento}')}"
+        f"zip -r {zip_path} ."
     )
 
     # Eliminamos la carpeta original
