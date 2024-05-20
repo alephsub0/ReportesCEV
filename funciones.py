@@ -117,7 +117,7 @@ def procesar_seguimiento(
     archivo_revision,
     nombre_coordinador,
     directorio=DIRECTORIO,
-    seguimiento=generar_codigo(),
+    identificador=generar_codigo(),
 ):
     """
     Procesa el seguimiento de aulas basado en un archivo de revisión y genera archivos .tex
@@ -127,6 +127,7 @@ def procesar_seguimiento(
     archivo_revision (str): La ruta al archivo de revisión en formato Excel.
     nombre_coordinador (str): El nombre del coordinador a incluir en los archivos generados.
     directorio (str): Directorio donde se generará el seguimiento.
+    identificador (str): Identificador único para el seguimiento.
 
     Returns:
     bytes: El contenido del archivo .zip generado.
@@ -150,7 +151,7 @@ def procesar_seguimiento(
     # Creamos una carpeta por cada docente, dentro de la carpeta Seguimiento
     for docente in lista_docentes:
         # Directorio para la creación de la carpeta
-        dir_carpeta = os.path.join(directorio, f"Seguimiento-{seguimiento}/{docente}")
+        dir_carpeta = os.path.join(directorio, f"Seguimiento-{identificador}/{docente}")
         if not os.path.exists(dir_carpeta):
             os.makedirs(dir_carpeta)
 
@@ -166,7 +167,7 @@ def procesar_seguimiento(
         nombre_archivo = f"{int(df_revision['NRC'][n])}-Seguimiento.tex"
         ruta_archivo = os.path.join(
             directorio,
-            f"Seguimiento-{seguimiento}/{df_revision['Nombre Completo'][n]}/{nombre_archivo}",
+            f"Seguimiento-{identificador}/{df_revision['Nombre Completo'][n]}/{nombre_archivo}",
         )
 
         with open(ruta_archivo, "w", encoding="utf-8") as archivo:
@@ -177,7 +178,7 @@ def procesar_seguimiento(
 
         # Directorios para compilación y archivo
         dir_carpeta_compilacion = os.path.join(
-            directorio, f"Seguimiento-{seguimiento}/{df_revision['Nombre Completo'][n]}"
+            directorio, f"Seguimiento-{identificador}/{df_revision['Nombre Completo'][n]}"
         )
         dir_archivo = os.path.join(
             dir_carpeta_compilacion,
@@ -201,10 +202,10 @@ def procesar_seguimiento(
             os.remove(f"{dir_archivo}{ext}")
 
     # Creamos la ruta del archivo zip
-    zip_path = os.path.join(directorio, f"Seguimiento-{seguimiento}.zip")
+    zip_path = os.path.join(directorio, f"Seguimiento-{identificador}.zip")
 
     # Creamos la ruta de la carpeta a comprimir
-    carpeta_a_comprimir = os.path.join(directorio, f"Seguimiento-{seguimiento}")
+    carpeta_a_comprimir = os.path.join(directorio, f"Seguimiento-{identificador}")
 
     # Creamos un archivo zip
     with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zipf:
