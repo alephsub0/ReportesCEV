@@ -1,10 +1,10 @@
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import render, HttpResponse
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render
 from .forms import FormularioSeguimientoAulas
 import pandas as pd
-from .funciones import procesar_seguimiento
+from .reportes_cev import procesar_seguimiento
 from .models import ModeloSeguimientoAulas
 from ServiciosReportesPUCE.settings import MEDIA_ROOT, DIRECTORIO_TEMPORAL_REPORTES_CEV
 import os
