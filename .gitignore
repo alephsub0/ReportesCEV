@@ -1,2 +1,3 @@
-gitignore
 __pycache__/
+/temp
+Formato de reporte_mal.xlsx

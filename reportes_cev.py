@@ -28,12 +28,12 @@ def reemplazar_datos(texto, df_revision, n):
     de un DataFrame en una fila específica.
 
     Args:
-    texto (str): El texto que contiene los marcadores de posición a reemplazar.
-    df_revision (DataFrame): El DataFrame que contiene los datos para el reemplazo.
-    n (int): El índice de la fila en el DataFrame de donde se tomarán los datos.
+        texto (str): El texto que contiene los marcadores de posición a reemplazar.
+        df_revision (DataFrame): El DataFrame que contiene los datos para el reemplazo.
+        n (int): El índice de la fila en el DataFrame de donde se tomarán los datos.
 
     Returns:
-    str: El texto con los marcadores de posición reemplazados por los valores correspondientes.
+        str: El texto con los marcadores de posición reemplazados por los valores correspondientes.
     """
     # Diccionario de sustituciones
     reemplazos = {
@@ -67,13 +67,18 @@ def leer_archivo_revision(archivo_revision):
     Lee el archivo de revisión y genera un DataFrame con los datos necesarios.
 
     Args:
-    archivo_revision (str): La ruta al archivo de revisión en formato Excel.
+        archivo_revision (str): La ruta al archivo de revisión en formato Excel.
 
     Returns:
-    DataFrame: Un DataFrame con los datos de la revisión.
+        DataFrame: Un DataFrame con los datos de la revisión.
     """
     # Leemos el archivo de revisión
-    df_revision = pd.read_excel(archivo_revision, sheet_name="Observación de aulas")
+    try:
+        df_revision = pd.read_excel(archivo_revision)
+    except Exception as e:
+        raise ValueError(
+            f"Error al leer el archivo de revisión '{archivo_revision}': {e}"
+        )
 
     # Reviso que tenga el número correcto de columnas
     if not os.path.exists(archivo_revision):
@@ -124,13 +129,13 @@ def procesar_seguimiento(
     y un archivo .zip con los resultados.
 
     Args:
-    archivo_revision (str): La ruta al archivo de revisión en formato Excel.
-    nombre_coordinador (str): El nombre del coordinador a incluir en los archivos generados.
-    directorio (str): Directorio donde se generará el seguimiento.
-    identificador (str): Identificador único para el seguimiento.
+        archivo_revision (str): La ruta al archivo de revisión en formato Excel.
+        nombre_coordinador (str): El nombre del coordinador a incluir en los archivos generados.
+        directorio (str): Directorio donde se generará el seguimiento.
+        identificador (str): Identificador único para el seguimiento.
 
     Returns:
-    bytes: El contenido del archivo .zip generado.
+        bytes: El contenido del archivo .zip generado.
     """
     # Revisamos que existan los archivos necesarios
     if not os.path.exists("formato.tex"):
@@ -178,7 +183,8 @@ def procesar_seguimiento(
 
         # Directorios para compilación y archivo
         dir_carpeta_compilacion = os.path.join(
-            directorio, f"Seguimiento-{identificador}/{df_revision['Nombre Completo'][n]}"
+            directorio,
+            f"Seguimiento-{identificador}/{df_revision['Nombre Completo'][n]}",
         )
         dir_archivo = os.path.join(
             dir_carpeta_compilacion,
@@ -193,13 +199,13 @@ def procesar_seguimiento(
             os.system(
                 f'pdflatex -output-directory="{dir_carpeta_compilacion}" "{dir_archivo}.tex"'
             )
+            # Eliminamos los archivos auxiliares
+            for ext in [".aux", ".log", ".tex"]:
+                os.remove(f"{dir_archivo}{ext}")
         except Exception as e:
             print(f"Error al compilar el archivo {dir_archivo}.")
             print(e)
 
-        # Eliminamos los archivos auxiliares
-        for ext in [".aux", ".log", ".tex"]:
-            os.remove(f"{dir_archivo}{ext}")
 
     # Creamos la ruta del archivo zip
     zip_path = os.path.join(directorio, f"Seguimiento-{identificador}.zip")
