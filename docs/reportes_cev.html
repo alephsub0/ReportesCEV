@@ -1,0 +1,610 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>reportes_cev API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>reportes_cev</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># Librerías necesarias
+import pandas as pd
+import os
+import shutil
+import argparse
+import zipfile
+
+# Constantes
+
+# Directorio donde se guardan los archivos temporales
+DIRECTORIO = &#34;.&#34;
+# Funciones
+
+
+def generar_codigo():
+    &#34;&#34;&#34;
+    Genera un código único con la fecha y hora actual.
+
+    Returns:
+        str: Código único con la fecha y hora actual.
+    &#34;&#34;&#34;
+    return pd.Timestamp.now().strftime(&#34;%Y%m%d%H%M%S&#34;)
+
+
+def reemplazar_datos(texto, df_revision, n):
+    &#34;&#34;&#34;
+    Reemplaza los marcadores de posición en un texto con los valores correspondientes
+    de un DataFrame en una fila específica.
+
+    Args:
+        texto (str): El texto que contiene los marcadores de posición a reemplazar.
+        df_revision (DataFrame): El DataFrame que contiene los datos para el reemplazo.
+        n (int): El índice de la fila en el DataFrame de donde se tomarán los datos.
+
+    Returns:
+        str: El texto con los marcadores de posición reemplazados por los valores correspondientes.
+    &#34;&#34;&#34;
+    # Diccionario de sustituciones
+    reemplazos = {
+        &#34;&lt;&lt;Docente&gt;&gt;&#34;: df_revision[&#34;Nombre Completo&#34;][n],
+        &#34;&lt;&lt;NRC&gt;&gt;&#34;: str(int(df_revision[&#34;NRC&#34;][n])),
+        &#34;&lt;&lt;Dominio&gt;&gt;&#34;: df_revision[&#34;Dominio&#34;][n],
+        &#34;&lt;&lt;Facultad&gt;&gt;&#34;: str(df_revision[&#34;Facultad&#34;][n]),
+        &#34;&lt;&lt;Carrera&gt;&gt;&#34;: str(df_revision[&#34;Carrera&#34;][n]),
+        &#34;&lt;&lt;Recursos&gt;&gt;&#34;: df_revision[&#34;Recursos&#34;][n],
+        &#34;&lt;&lt;Evaluación&gt;&gt;&#34;: df_revision[&#34;Evaluación&#34;][n],
+        &#34;&lt;&lt;Estructura&gt;&gt;&#34;: df_revision[&#34;Estructura&#34;][n],
+        &#34;&lt;&lt;Calificaciones&gt;&gt;&#34;: df_revision[&#34;Calificaciones&#34;][n],
+        &#34;&lt;&lt;Retroalimentación&gt;&gt;&#34;: df_revision[&#34;Retroalimentación&#34;][n],
+        &#34;&lt;&lt;Fecha&gt;&gt;&#34;: (
+            df_revision[&#34;Fecha&#34;][n].strftime(&#34;%m/%d/%Y&#34;)
+            if hasattr(df_revision[&#34;Fecha&#34;][n], &#34;strftime&#34;)
+            else str(df_revision[&#34;Fecha&#34;][n])
+        ),
+        &#34;&lt;&lt;Hora&gt;&gt;&#34;: str(df_revision[&#34;Hora&#34;][n]),
+    }
+
+    # Reemplazo de texto usando el diccionario
+    for marcador, valor in reemplazos.items():
+        texto = texto.replace(marcador, valor)
+
+    return texto
+
+
+def leer_archivo_revision(archivo_revision):
+    &#34;&#34;&#34;
+    Lee el archivo de revisión y genera un DataFrame con los datos necesarios.
+
+    Args:
+        archivo_revision (str): La ruta al archivo de revisión en formato Excel.
+
+    Returns:
+        DataFrame: Un DataFrame con los datos de la revisión.
+    &#34;&#34;&#34;
+    # Leemos el archivo de revisión
+    try:
+        df_revision = pd.read_excel(archivo_revision)
+    except Exception as e:
+        raise ValueError(
+            f&#34;Error al leer el archivo de revisión &#39;{archivo_revision}&#39;: {e}&#34;
+        )
+
+    # Reviso que tenga el número correcto de columnas
+    if not os.path.exists(archivo_revision):
+        raise FileNotFoundError(
+            f&#34;No se encontró el archivo de revisión &#39;{archivo_revision}&#39;.&#34;
+        )
+    if df_revision.shape[1] != 13:
+        raise ValueError(
+            f&#34;El archivo de revisión debe tener 13 columnas, pero tiene {df_revision.shape[1]}.&#34;
+        )
+
+    # Renombramos las columnas
+    df_revision.columns = [
+        &#34;Dominio&#34;,
+        &#34;Facultad&#34;,
+        &#34;Carrera&#34;,
+        &#34;NRC&#34;,
+        &#34;Apellidos&#34;,
+        &#34;Nombre&#34;,
+        &#34;Fecha&#34;,
+        &#34;Hora&#34;,
+        &#34;Recursos&#34;,
+        &#34;Evaluación&#34;,
+        &#34;Estructura&#34;,
+        &#34;Calificaciones&#34;,
+        &#34;Retroalimentación&#34;,
+    ]
+
+    # Eliminamos todos los registros que tengan NaN en la columna Nombre
+    df_revision = df_revision.dropna(subset=[&#34;Nombre&#34;])
+
+    # Concatenamos los nombres y apellidos
+    df_revision[&#34;Nombre Completo&#34;] = (
+        df_revision[&#34;Apellidos&#34;] + &#34; &#34; + df_revision[&#34;Nombre&#34;]
+    )
+
+    return df_revision
+
+
+def procesar_seguimiento(
+    archivo_revision,
+    nombre_coordinador,
+    directorio=DIRECTORIO,
+    identificador=generar_codigo(),
+):
+    &#34;&#34;&#34;
+    Procesa el seguimiento de aulas basado en un archivo de revisión y genera archivos .tex
+    y un archivo .zip con los resultados.
+
+    Args:
+        archivo_revision (str): La ruta al archivo de revisión en formato Excel.
+        nombre_coordinador (str): El nombre del coordinador a incluir en los archivos generados.
+        directorio (str): Directorio donde se generará el seguimiento.
+        identificador (str): Identificador único para el seguimiento.
+
+    Returns:
+        bytes: El contenido del archivo .zip generado.
+    &#34;&#34;&#34;
+    # Revisamos que existan los archivos necesarios
+    if not os.path.exists(&#34;formato.tex&#34;):
+        raise FileNotFoundError(&#34;No se encontró el archivo &#39;formato.tex&#39;.&#34;)
+    if not os.path.exists(&#34;HojaMembretadaCEV.pdf&#34;):
+        raise FileNotFoundError(&#34;No se encontró el archivo &#39;HojaMembretadaCEV.pdf&#39;.&#34;)
+    if not os.path.exists(archivo_revision):
+        raise FileNotFoundError(
+            f&#34;No se encontró el archivo de revisión &#39;{archivo_revision}&#39;.&#34;
+        )
+
+    # Generamos el DataFrame con los datos de revisión
+    df_revision = leer_archivo_revision(archivo_revision)
+
+    # Generamos una lista con los nombres de los docentes sin repetir
+    lista_docentes = df_revision[&#34;Nombre Completo&#34;].unique()
+
+    # Creamos una carpeta por cada docente, dentro de la carpeta Seguimiento
+    for docente in lista_docentes:
+        # Directorio para la creación de la carpeta
+        dir_carpeta = os.path.join(directorio, f&#34;Seguimiento-{identificador}/{docente}&#34;)
+        if not os.path.exists(dir_carpeta):
+            os.makedirs(dir_carpeta)
+
+    # Leemos la plantilla
+    texto_base = open(&#34;formato.tex&#34;, &#34;r&#34;, encoding=&#34;utf-8&#34;).read()
+
+    # Reemplazo del nombre del coordinador
+    texto_base = texto_base.replace(&#34;&lt;&lt;Coordinador&gt;&gt;&#34;, nombre_coordinador)
+
+    # Recorremos cada fila de los datos
+    for n in range(df_revision.shape[0]):
+        # Generamos un archivo con el nombre del docente y NRC
+        nombre_archivo = f&#34;{int(df_revision[&#39;NRC&#39;][n])}-Seguimiento.tex&#34;
+        ruta_archivo = os.path.join(
+            directorio,
+            f&#34;Seguimiento-{identificador}/{df_revision[&#39;Nombre Completo&#39;][n]}/{nombre_archivo}&#34;,
+        )
+
+        with open(ruta_archivo, &#34;w&#34;, encoding=&#34;utf-8&#34;) as archivo:
+            # Reemplazamos los datos en el texto base
+            texto = reemplazar_datos(texto_base, df_revision, n)
+            # Escribimos el texto en el nuevo archivo
+            archivo.write(texto)
+
+        # Directorios para compilación y archivo
+        dir_carpeta_compilacion = os.path.join(
+            directorio,
+            f&#34;Seguimiento-{identificador}/{df_revision[&#39;Nombre Completo&#39;][n]}&#34;,
+        )
+        dir_archivo = os.path.join(
+            dir_carpeta_compilacion,
+            f&#34;{int(df_revision[&#39;NRC&#39;][n])}-Seguimiento&#34;,
+        )
+
+        # Compilamos el archivo tex (2 veces)
+        try:
+            os.system(
+                f&#39;pdflatex -output-directory=&#34;{dir_carpeta_compilacion}&#34; &#34;{dir_archivo}.tex&#34;&#39;
+            )
+            os.system(
+                f&#39;pdflatex -output-directory=&#34;{dir_carpeta_compilacion}&#34; &#34;{dir_archivo}.tex&#34;&#39;
+            )
+            # Eliminamos los archivos auxiliares
+            for ext in [&#34;.aux&#34;, &#34;.log&#34;, &#34;.tex&#34;]:
+                os.remove(f&#34;{dir_archivo}{ext}&#34;)
+        except Exception as e:
+            print(f&#34;Error al compilar el archivo {dir_archivo}.&#34;)
+            print(e)
+
+
+    # Creamos la ruta del archivo zip
+    zip_path = os.path.join(directorio, f&#34;Seguimiento-{identificador}.zip&#34;)
+
+    # Creamos la ruta de la carpeta a comprimir
+    carpeta_a_comprimir = os.path.join(directorio, f&#34;Seguimiento-{identificador}&#34;)
+
+    # Creamos un archivo zip
+    with zipfile.ZipFile(zip_path, &#34;w&#34;, zipfile.ZIP_DEFLATED) as zipf:
+        for root, _, files in os.walk(carpeta_a_comprimir):
+            for file in files:
+                file_path = os.path.join(root, file)
+                # Agregar el archivo al zip con la ruta relativa a la carpeta
+                zipf.write(file_path, os.path.relpath(file_path, carpeta_a_comprimir))
+
+    # Eliminar la carpeta original y su contenido
+    shutil.rmtree(carpeta_a_comprimir)
+
+    # Regresamos el archivo zip
+    return zip_path
+
+
+if __name__ == &#34;__main__&#34;:
+    parser = argparse.ArgumentParser(description=&#34;Procesar seguimiento de aulas.&#34;)
+    parser.add_argument(
+        &#34;archivo_revision&#34;,
+        type=str,
+        help=&#34;Ruta al archivo de revisión en formato Excel&#34;,
+    )
+    parser.add_argument(&#34;nombre_coordinador&#34;, type=str, help=&#34;Nombre del coordinador&#34;)
+
+    args = parser.parse_args()
+
+    zip_file = procesar_seguimiento(args.archivo_revision, args.nombre_coordinador)
+
+    # Guardar el archivo zip en la ubicación deseada
+    zip_output_path = os.path.join(DIRECTORIO, &#34;Seguimiento.zip&#34;)
+    with open(zip_output_path, &#34;wb&#34;) as f:
+        f.write(zip_file)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="reportes_cev.generar_codigo"><code class="name flex">
+<span>def <span class="ident">generar_codigo</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Genera un código único con la fecha y hora actual.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>str</code></dt>
+<dd>Código único con la fecha y hora actual.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def generar_codigo():
+    &#34;&#34;&#34;
+    Genera un código único con la fecha y hora actual.
+
+    Returns:
+        str: Código único con la fecha y hora actual.
+    &#34;&#34;&#34;
+    return pd.Timestamp.now().strftime(&#34;%Y%m%d%H%M%S&#34;)</code></pre>
+</details>
+</dd>
+<dt id="reportes_cev.leer_archivo_revision"><code class="name flex">
+<span>def <span class="ident">leer_archivo_revision</span></span>(<span>archivo_revision)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Lee el archivo de revisión y genera un DataFrame con los datos necesarios.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>archivo_revision</code></strong> :&ensp;<code>str</code></dt>
+<dd>La ruta al archivo de revisión en formato Excel.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>DataFrame</code></dt>
+<dd>Un DataFrame con los datos de la revisión.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def leer_archivo_revision(archivo_revision):
+    &#34;&#34;&#34;
+    Lee el archivo de revisión y genera un DataFrame con los datos necesarios.
+
+    Args:
+        archivo_revision (str): La ruta al archivo de revisión en formato Excel.
+
+    Returns:
+        DataFrame: Un DataFrame con los datos de la revisión.
+    &#34;&#34;&#34;
+    # Leemos el archivo de revisión
+    try:
+        df_revision = pd.read_excel(archivo_revision)
+    except Exception as e:
+        raise ValueError(
+            f&#34;Error al leer el archivo de revisión &#39;{archivo_revision}&#39;: {e}&#34;
+        )
+
+    # Reviso que tenga el número correcto de columnas
+    if not os.path.exists(archivo_revision):
+        raise FileNotFoundError(
+            f&#34;No se encontró el archivo de revisión &#39;{archivo_revision}&#39;.&#34;
+        )
+    if df_revision.shape[1] != 13:
+        raise ValueError(
+            f&#34;El archivo de revisión debe tener 13 columnas, pero tiene {df_revision.shape[1]}.&#34;
+        )
+
+    # Renombramos las columnas
+    df_revision.columns = [
+        &#34;Dominio&#34;,
+        &#34;Facultad&#34;,
+        &#34;Carrera&#34;,
+        &#34;NRC&#34;,
+        &#34;Apellidos&#34;,
+        &#34;Nombre&#34;,
+        &#34;Fecha&#34;,
+        &#34;Hora&#34;,
+        &#34;Recursos&#34;,
+        &#34;Evaluación&#34;,
+        &#34;Estructura&#34;,
+        &#34;Calificaciones&#34;,
+        &#34;Retroalimentación&#34;,
+    ]
+
+    # Eliminamos todos los registros que tengan NaN en la columna Nombre
+    df_revision = df_revision.dropna(subset=[&#34;Nombre&#34;])
+
+    # Concatenamos los nombres y apellidos
+    df_revision[&#34;Nombre Completo&#34;] = (
+        df_revision[&#34;Apellidos&#34;] + &#34; &#34; + df_revision[&#34;Nombre&#34;]
+    )
+
+    return df_revision</code></pre>
+</details>
+</dd>
+<dt id="reportes_cev.procesar_seguimiento"><code class="name flex">
+<span>def <span class="ident">procesar_seguimiento</span></span>(<span>archivo_revision, nombre_coordinador, directorio='.', identificador='20240521145705')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Procesa el seguimiento de aulas basado en un archivo de revisión y genera archivos .tex
+y un archivo .zip con los resultados.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>archivo_revision</code></strong> :&ensp;<code>str</code></dt>
+<dd>La ruta al archivo de revisión en formato Excel.</dd>
+<dt><strong><code>nombre_coordinador</code></strong> :&ensp;<code>str</code></dt>
+<dd>El nombre del coordinador a incluir en los archivos generados.</dd>
+<dt><strong><code>directorio</code></strong> :&ensp;<code>str</code></dt>
+<dd>Directorio donde se generará el seguimiento.</dd>
+<dt><strong><code>identificador</code></strong> :&ensp;<code>str</code></dt>
+<dd>Identificador único para el seguimiento.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bytes</code></dt>
+<dd>El contenido del archivo .zip generado.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def procesar_seguimiento(
+    archivo_revision,
+    nombre_coordinador,
+    directorio=DIRECTORIO,
+    identificador=generar_codigo(),
+):
+    &#34;&#34;&#34;
+    Procesa el seguimiento de aulas basado en un archivo de revisión y genera archivos .tex
+    y un archivo .zip con los resultados.
+
+    Args:
+        archivo_revision (str): La ruta al archivo de revisión en formato Excel.
+        nombre_coordinador (str): El nombre del coordinador a incluir en los archivos generados.
+        directorio (str): Directorio donde se generará el seguimiento.
+        identificador (str): Identificador único para el seguimiento.
+
+    Returns:
+        bytes: El contenido del archivo .zip generado.
+    &#34;&#34;&#34;
+    # Revisamos que existan los archivos necesarios
+    if not os.path.exists(&#34;formato.tex&#34;):
+        raise FileNotFoundError(&#34;No se encontró el archivo &#39;formato.tex&#39;.&#34;)
+    if not os.path.exists(&#34;HojaMembretadaCEV.pdf&#34;):
+        raise FileNotFoundError(&#34;No se encontró el archivo &#39;HojaMembretadaCEV.pdf&#39;.&#34;)
+    if not os.path.exists(archivo_revision):
+        raise FileNotFoundError(
+            f&#34;No se encontró el archivo de revisión &#39;{archivo_revision}&#39;.&#34;
+        )
+
+    # Generamos el DataFrame con los datos de revisión
+    df_revision = leer_archivo_revision(archivo_revision)
+
+    # Generamos una lista con los nombres de los docentes sin repetir
+    lista_docentes = df_revision[&#34;Nombre Completo&#34;].unique()
+
+    # Creamos una carpeta por cada docente, dentro de la carpeta Seguimiento
+    for docente in lista_docentes:
+        # Directorio para la creación de la carpeta
+        dir_carpeta = os.path.join(directorio, f&#34;Seguimiento-{identificador}/{docente}&#34;)
+        if not os.path.exists(dir_carpeta):
+            os.makedirs(dir_carpeta)
+
+    # Leemos la plantilla
+    texto_base = open(&#34;formato.tex&#34;, &#34;r&#34;, encoding=&#34;utf-8&#34;).read()
+
+    # Reemplazo del nombre del coordinador
+    texto_base = texto_base.replace(&#34;&lt;&lt;Coordinador&gt;&gt;&#34;, nombre_coordinador)
+
+    # Recorremos cada fila de los datos
+    for n in range(df_revision.shape[0]):
+        # Generamos un archivo con el nombre del docente y NRC
+        nombre_archivo = f&#34;{int(df_revision[&#39;NRC&#39;][n])}-Seguimiento.tex&#34;
+        ruta_archivo = os.path.join(
+            directorio,
+            f&#34;Seguimiento-{identificador}/{df_revision[&#39;Nombre Completo&#39;][n]}/{nombre_archivo}&#34;,
+        )
+
+        with open(ruta_archivo, &#34;w&#34;, encoding=&#34;utf-8&#34;) as archivo:
+            # Reemplazamos los datos en el texto base
+            texto = reemplazar_datos(texto_base, df_revision, n)
+            # Escribimos el texto en el nuevo archivo
+            archivo.write(texto)
+
+        # Directorios para compilación y archivo
+        dir_carpeta_compilacion = os.path.join(
+            directorio,
+            f&#34;Seguimiento-{identificador}/{df_revision[&#39;Nombre Completo&#39;][n]}&#34;,
+        )
+        dir_archivo = os.path.join(
+            dir_carpeta_compilacion,
+            f&#34;{int(df_revision[&#39;NRC&#39;][n])}-Seguimiento&#34;,
+        )
+
+        # Compilamos el archivo tex (2 veces)
+        try:
+            os.system(
+                f&#39;pdflatex -output-directory=&#34;{dir_carpeta_compilacion}&#34; &#34;{dir_archivo}.tex&#34;&#39;
+            )
+            os.system(
+                f&#39;pdflatex -output-directory=&#34;{dir_carpeta_compilacion}&#34; &#34;{dir_archivo}.tex&#34;&#39;
+            )
+            # Eliminamos los archivos auxiliares
+            for ext in [&#34;.aux&#34;, &#34;.log&#34;, &#34;.tex&#34;]:
+                os.remove(f&#34;{dir_archivo}{ext}&#34;)
+        except Exception as e:
+            print(f&#34;Error al compilar el archivo {dir_archivo}.&#34;)
+            print(e)
+
+
+    # Creamos la ruta del archivo zip
+    zip_path = os.path.join(directorio, f&#34;Seguimiento-{identificador}.zip&#34;)
+
+    # Creamos la ruta de la carpeta a comprimir
+    carpeta_a_comprimir = os.path.join(directorio, f&#34;Seguimiento-{identificador}&#34;)
+
+    # Creamos un archivo zip
+    with zipfile.ZipFile(zip_path, &#34;w&#34;, zipfile.ZIP_DEFLATED) as zipf:
+        for root, _, files in os.walk(carpeta_a_comprimir):
+            for file in files:
+                file_path = os.path.join(root, file)
+                # Agregar el archivo al zip con la ruta relativa a la carpeta
+                zipf.write(file_path, os.path.relpath(file_path, carpeta_a_comprimir))
+
+    # Eliminar la carpeta original y su contenido
+    shutil.rmtree(carpeta_a_comprimir)
+
+    # Regresamos el archivo zip
+    return zip_path</code></pre>
+</details>
+</dd>
+<dt id="reportes_cev.reemplazar_datos"><code class="name flex">
+<span>def <span class="ident">reemplazar_datos</span></span>(<span>texto, df_revision, n)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Reemplaza los marcadores de posición en un texto con los valores correspondientes
+de un DataFrame en una fila específica.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>texto</code></strong> :&ensp;<code>str</code></dt>
+<dd>El texto que contiene los marcadores de posición a reemplazar.</dd>
+<dt><strong><code>df_revision</code></strong> :&ensp;<code>DataFrame</code></dt>
+<dd>El DataFrame que contiene los datos para el reemplazo.</dd>
+<dt><strong><code>n</code></strong> :&ensp;<code>int</code></dt>
+<dd>El índice de la fila en el DataFrame de donde se tomarán los datos.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>str</code></dt>
+<dd>El texto con los marcadores de posición reemplazados por los valores correspondientes.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def reemplazar_datos(texto, df_revision, n):
+    &#34;&#34;&#34;
+    Reemplaza los marcadores de posición en un texto con los valores correspondientes
+    de un DataFrame en una fila específica.
+
+    Args:
+        texto (str): El texto que contiene los marcadores de posición a reemplazar.
+        df_revision (DataFrame): El DataFrame que contiene los datos para el reemplazo.
+        n (int): El índice de la fila en el DataFrame de donde se tomarán los datos.
+
+    Returns:
+        str: El texto con los marcadores de posición reemplazados por los valores correspondientes.
+    &#34;&#34;&#34;
+    # Diccionario de sustituciones
+    reemplazos = {
+        &#34;&lt;&lt;Docente&gt;&gt;&#34;: df_revision[&#34;Nombre Completo&#34;][n],
+        &#34;&lt;&lt;NRC&gt;&gt;&#34;: str(int(df_revision[&#34;NRC&#34;][n])),
+        &#34;&lt;&lt;Dominio&gt;&gt;&#34;: df_revision[&#34;Dominio&#34;][n],
+        &#34;&lt;&lt;Facultad&gt;&gt;&#34;: str(df_revision[&#34;Facultad&#34;][n]),
+        &#34;&lt;&lt;Carrera&gt;&gt;&#34;: str(df_revision[&#34;Carrera&#34;][n]),
+        &#34;&lt;&lt;Recursos&gt;&gt;&#34;: df_revision[&#34;Recursos&#34;][n],
+        &#34;&lt;&lt;Evaluación&gt;&gt;&#34;: df_revision[&#34;Evaluación&#34;][n],
+        &#34;&lt;&lt;Estructura&gt;&gt;&#34;: df_revision[&#34;Estructura&#34;][n],
+        &#34;&lt;&lt;Calificaciones&gt;&gt;&#34;: df_revision[&#34;Calificaciones&#34;][n],
+        &#34;&lt;&lt;Retroalimentación&gt;&gt;&#34;: df_revision[&#34;Retroalimentación&#34;][n],
+        &#34;&lt;&lt;Fecha&gt;&gt;&#34;: (
+            df_revision[&#34;Fecha&#34;][n].strftime(&#34;%m/%d/%Y&#34;)
+            if hasattr(df_revision[&#34;Fecha&#34;][n], &#34;strftime&#34;)
+            else str(df_revision[&#34;Fecha&#34;][n])
+        ),
+        &#34;&lt;&lt;Hora&gt;&gt;&#34;: str(df_revision[&#34;Hora&#34;][n]),
+    }
+
+    # Reemplazo de texto usando el diccionario
+    for marcador, valor in reemplazos.items():
+        texto = texto.replace(marcador, valor)
+
+    return texto</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="reportes_cev.generar_codigo" href="#reportes_cev.generar_codigo">generar_codigo</a></code></li>
+<li><code><a title="reportes_cev.leer_archivo_revision" href="#reportes_cev.leer_archivo_revision">leer_archivo_revision</a></code></li>
+<li><code><a title="reportes_cev.procesar_seguimiento" href="#reportes_cev.procesar_seguimiento">procesar_seguimiento</a></code></li>
+<li><code><a title="reportes_cev.reemplazar_datos" href="#reportes_cev.reemplazar_datos">reemplazar_datos</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>
