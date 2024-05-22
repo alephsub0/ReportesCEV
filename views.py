@@ -157,11 +157,24 @@ def GenerarReportesSeguimiento(request):
                     'codigo': identificador_proceso,
                 })
                 
-                EmailMessage(
-                    'Reporte de Seguimiento de Aulas',
-                    mensaje,
-                    to=[request.user.email]
-                ).send()
+                try: 
+
+                    EmailMessage(
+                        'Reporte de Seguimiento de Aulas',
+                        mensaje,
+                        to=[form.cleaned_data["Correo"]],
+                        from_email="Servicios Alephsub0 <naranjolm99@gmail.com>"
+                    ).send()
+
+                    ModeloSeguimientoAulas.objects.filter(IdProceso=identificador_proceso).update(
+                        CorreoEnviado=1
+                    )
+                except:
+                    # En el modelo ModeloSeguimientoAulas actualizamos el campo CorreoEnviado a 0
+                    ModeloSeguimientoAulas.objects.filter(IdProceso=identificador_proceso).update(
+                        CorreoEnviado=0
+                    )
+
             else:
 
                 mensaje = render_to_string('Extras/PlanitllaErrorEnvioSeguimiento.html', {
@@ -170,14 +183,25 @@ def GenerarReportesSeguimiento(request):
                     'message' : json_respuesta["message"],
                 })
                 
-                EmailMessage(
-                    'Error: Reporte de Seguimiento de Aulas',
-                    mensaje,
-                    to=[request.user.email]
-                ).send()
+                try:
+                    EmailMessage(
+                        'Error: Reporte de Seguimiento de Aulas',
+                        mensaje,
+                        to=[form.cleaned_data["Correo"]],
+                        from_email="Servicios Alephsub0 <naranjolm99@gmail.com>"
+                    ).send()
 
-            return JsonResponse(json_respuesta, safe=False)
+                    ModeloSeguimientoAulas.objects.filter(IdProceso=identificador_proceso).update(
+                        CorreoEnviado=1
+                    )
+                except:
+                    # En el modelo ModeloSeguimientoAulas actualizamos el campo CorreoEnviado a 0
+                    ModeloSeguimientoAulas.objects.filter(IdProceso=identificador_proceso).update(
+                        CorreoEnviado=0
+                    )
 
+            # Regresa repuesta http 200
+            return HttpResponse(status=204)
 
 @user_passes_test(is_member_puce)
 @login_required
