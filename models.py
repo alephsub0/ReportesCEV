@@ -9,8 +9,6 @@ class ModeloSeguimientoAulas(models.Model):
     ArchivoSeguimiento = models.FileField(
         upload_to="reportes_cev/", db_column="ArchivoSeguimiento"
     )
-    Correo = models.CharField(max_length=150, db_column="Correo")
-    CorreoEnviado = models.SmallIntegerField(blank=True, null=True, db_column="CorreoEnviado")
     IdProceso = models.IntegerField(blank=True, null=False, db_column="IdProceso")
     IdUsuario = models.IntegerField(blank=True, null=False, db_column="IdUsuario")
     Fecha = models.DateTimeField(auto_now_add=True, db_column="Fecha")

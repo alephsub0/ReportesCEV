@@ -4,4 +4,4 @@ from ReportesCEV.models import ModeloSeguimientoAulas
 class FormularioSeguimientoAulas(forms.ModelForm):
     class Meta:
         model = ModeloSeguimientoAulas
-        fields = ['NombreCoordinador','ArchivoSeguimiento','IdProceso','Correo']
+        fields = ['NombreCoordinador','ArchivoSeguimiento','IdProceso']
