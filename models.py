@@ -10,12 +10,13 @@ class ModeloSeguimientoAulas(models.Model):
         upload_to="reportes_cev/", db_column="ArchivoSeguimiento"
     )
     IdProceso = models.IntegerField(blank=True, null=False, db_column="IdProceso")
-    IdUsuario = models.IntegerField(blank=True, null=False, db_column="IdUsuario")
+    IdUsuario = models.CharField(
+        max_length=200, blank=True, null=False, db_column="IdUsuario"
+    )
     Fecha = models.DateTimeField(auto_now_add=True, db_column="Fecha")
     ArchivoComprimido = models.CharField(
         max_length=100, blank=True, null=True, db_column="ArchivoComprimido"
     )
-
 
     class Meta:
         managed = True

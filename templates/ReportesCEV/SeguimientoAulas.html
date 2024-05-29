@@ -1,0 +1,57 @@
+{% extends 'layouts/Tablero.html' %} {% load static %} {% block content %}
+
+<div class="pagetitle">
+  <h1>Generación de reportes para seguimiento de aulas virtuales</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'InicioTablero' %}">Inicio</a></li>
+      <li class="breadcrumb-item active">Generación de reportes para seguimiento de aulas virtuales</li>
+    </ol>
+  </nav>
+</div>
+
+
+<p>Genera los informes para el seguimiento de las aulas virtuales en función de un formato base.</p>
+
+{% include 'Extras/Mensajes.html' %}
+
+<div class="alert alert-warning alert-dismissible" role="alert" style="display: none;" id="NotificacionGeneracion">
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="x" ></button>
+  <div style="display: flex">
+    <p style="width: 75%">Se están generando sus reportes, por favor espere. No cierre esta ventana ni actualice la página. La generación de los reportes puede tardar varios minutos, dependiendo de la cantidad de registros en el archivo.</p>
+    <div style="padding-left: 5%;">
+      <div class="loader" style="margin-right: auto;"></div>   
+    </div>
+  </div>
+</div>
+
+<div class="alert alert-success alert-dismissible" role="alert" style="display: none;" id="NotificacionDescarga">
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="x" ></button>
+</div>
+
+<form id="formularioseguimiento" method="post" enctype="multipart/form-data" action="{% url 'GenerarReportesSeguimiento' %}">
+    {% csrf_token %}
+    <hr/>
+    <div class="col-md-6">
+      <h5>Subir archivo de seguimiento</h5>
+      <p>Sube el archivo EXCEL con el formato adecuado para generar los reportes individuales:</p>
+      <input type="file" name="ArchivoSeguimiento" id="id_ArchivoSeguimiento" accept=".xlsx">
+    </div>
+    <hr/>
+    <div class="col-md-6">
+      <h5>Nombre del coordinador</h5>
+      <p>Ingresa el nombre del coordinador.</p>
+      <input type="text" name="NombreCoordinador" id="id_NombreCoordinador" class="form-control" required>
+      <hr/>
+  </div>
+
+  <button type="submit" class="btn btn-primary" id="BotonGenerarReportes">Generar reportes</button>
+</form>
+
+<script type="text/javascript">
+  const UrlDescarga = "{% url  'DescargarReporteSeguimientoAulas' '1' %}";
+</script>
+
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script src="{% static 'js/ReportesCEV/SeguimientoAulas.js' %}"></script>
+{% endblock %}
