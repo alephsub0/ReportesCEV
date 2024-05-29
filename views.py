@@ -229,7 +229,7 @@ def DescargarReporteSeguimientoAulas(request, *, context, identificador_proceso)
 
     if identificador_usuario != UsuarioProceso:
         messages.error(request, "No tienes permiso para descargar este archivo")
-        return render(request, "SeguimientoAulas.html")
+        return render(request, "ReportesCEV/SeguimientoAulas.html")
 
     # Obtenemos la ruta del archivo comprimido
     archivo_comprimido = ModeloSeguimientoAulas.objects.get(
@@ -255,7 +255,7 @@ def DescargarReporteSeguimientoAulas(request, *, context, identificador_proceso)
         messages.error(request, "No se encontró el archivo comprimido")
         return render(
             request,
-            "SeguimientoAulas.html",
+            "ReportesCEV/SeguimientoAulas.html",
             {
                 "nombre_usuario": usuario["name"],
                 "grupos_pertenece": grupos_pertenece,
