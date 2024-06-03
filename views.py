@@ -1,4 +1,5 @@
-from django.shortcuts import render, HttpResponse, redirect
+# Módulos del script
+from django.shortcuts import render, HttpResponse
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from .forms import FormularioSeguimientoAulas
@@ -8,57 +9,20 @@ from .models import ModeloSeguimientoAulas
 from ServiciosReportesPUCE.settings import (
     MEDIA_ROOT,
     DIRECTORIO_TEMPORAL_REPORTES_CEV,
-    GRUPO_SEGURIDAD_REPORTES_CEV,
+    GRUPOS_SEGURIDAD,
 )
 import os
 from django.contrib import messages
 from django.conf import settings
 import sys
-from ServiciosReportesPUCE.views import obtener_grupos
-from functools import wraps
-from ServiciosReportesPUCE.funciones import obtener_usuario_id,obtener_imagen_perfil 
-import json
+from ServiciosReportesPUCE.funciones import (
+    obtener_usuario_id,
+    verificar_miembro_grupo_seguridad,
+    informacion_usuario
+)
 
-
-def verificar_miembro_grupo_seguridad(view_func):
-    """
-    Decorador para verificar si el usuario es miembro del grupo ServiciosPUCE.
-
-    Este decorador extrae el token de sesión del usuario,
-    luego extrae el secreto necesario del token y utiliza este secreto para obtener
-    los grupos a los que pertenece el usuario. Si el usuario es miembro del grupo
-    'GRUPO_SEGURIDAD_REPORTES_CEV', se permite el acceso a la vista.
-    Si no, se redirige al usuario a la página de inicio del tablero.
-
-    Args:
-        view_func: La función de vista a decorar.
-
-    Returns:
-        Una función de envoltura que realiza la verificación de membresía.
-    """
-
-    @wraps(view_func)
-    def envoltura(request, *args, **kwargs):
-        # Manejar el caso donde no se encuentra el token en la sesión del usuario
-        # Esto podría suceder si el usuario no está autenticado
-        try:
-            session_token_cache = json.loads(request.session["_token_cache"])
-            acces_token = session_token_cache["AccessToken"]
-            secret = list(acces_token.values())[0]["secret"]
-        except json.JSONDecodeError:
-            secret = None
-
-        if secret:
-            grupos = obtener_grupos(secret)
-            if GRUPO_SEGURIDAD_REPORTES_CEV in grupos:
-                return view_func(request, *args, **kwargs)
-
-        # Redirigir al usuario a la página de inicio del tablero
-        return redirect("InicioTablero")
-
-    return envoltura
-
-
+# Variables del script
+nombre_grupo_seg = "reportes_cev"
 
 def generar_codigo():
     """
@@ -167,7 +131,7 @@ def elaborar_reportes(identificador_proceso, nombre_coordinador):
         return respuesta
 
 
-@verificar_miembro_grupo_seguridad
+@verificar_miembro_grupo_seguridad(grupo_seguridad=GRUPOS_SEGURIDAD[nombre_grupo_seg])
 @settings.AUTH.login_required(scopes="GroupMember.Read.All".split())
 @require_http_methods(["POST"])
 def GenerarReportesSeguimiento(request, *, context):
@@ -194,13 +158,12 @@ def GenerarReportesSeguimiento(request, *, context):
         return JsonResponse(json_respuesta, safe=False)
 
 
-# @verificar_miembro_grupo_seguridad
+@verificar_miembro_grupo_seguridad(grupo_seguridad=GRUPOS_SEGURIDAD[nombre_grupo_seg])
 @settings.AUTH.login_required(scopes="GroupMember.Read.All".split())
 @require_http_methods(["GET"])
 def SeguimientoAulas(request, *, context):
-    usuario = context["user"]
-    grupos_pertenece = obtener_grupos(context["access_token"])
-    obtener_imagen_perfil(context["access_token"])
+    
+    info_usr = informacion_usuario(context)
 
     formulario = FormularioSeguimientoAulas()
     return render(
@@ -208,18 +171,20 @@ def SeguimientoAulas(request, *, context):
         "ReportesCEV/SeguimientoAulas.html",
         {
             "formulario": formulario,
-            "nombre_usuario": usuario["name"],
-            "grupos_pertenece": grupos_pertenece,
+            "nombre_usuario": info_usr["nombre_usuario"],
+            "grupos_pertenece": info_usr["grupos_pertenece"],
+            "grupos_seguridad": info_usr["grupos_seguridad"],
         },
     )
 
 
-@verificar_miembro_grupo_seguridad
+@verificar_miembro_grupo_seguridad(grupo_seguridad=GRUPOS_SEGURIDAD[nombre_grupo_seg])
 @require_http_methods(["GET"])
 @settings.AUTH.login_required(scopes="GroupMember.Read.All".split())
 def DescargarReporteSeguimientoAulas(request, *, context, identificador_proceso):
-    usuario = context["user"]
-    grupos_pertenece = obtener_grupos(context["access_token"])
+
+    info_usr = informacion_usuario(context)
+
     identificador_usuario = obtener_usuario_id(context)
 
     # Verificamos si el usuario que solicita la descarga es el mismo que generó el proceso
@@ -257,7 +222,8 @@ def DescargarReporteSeguimientoAulas(request, *, context, identificador_proceso)
             request,
             "ReportesCEV/SeguimientoAulas.html",
             {
-                "nombre_usuario": usuario["name"],
-                "grupos_pertenece": grupos_pertenece,
+                "nombre_usuario": info_usr["nombre_usuario"],
+                "grupos_pertenece": info_usr["grupos_pertenece"],
+                "grupos_seguridad": info_usr["grupos_seguridad"],
             },
         )
