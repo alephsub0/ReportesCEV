@@ -21,9 +21,13 @@
 
 ## Sobre el Proyecto
 
-Este proyecto tiene como objetivo desarrollar una aplicación web que permita generar reportes de revisión de aulas virtuales. Estos reportes son realizados por el Centro de Educación Virtual (CEV) de la Pontificia Universidad Católica del Ecuador (PUCE). La aplicación facilita la automatización del proceso de generación de reportes en formato LaTeX y su conversión a PDF, incluyendo la creación de archivos .zip con los reportes compilados. 
+Este proyecto tiene como objetivo desarrollar una aplicación web que permita generar reportes de revisión de aulas virtuales. Estos reportes son realizados por el Centro de Educación Virtual (CEV) de la Pontificia Universidad Católica del Ecuador (PUCE). La aplicación facilita la automatización del proceso de generación de reportes en formato LaTeX y su conversión a PDF, incluyendo la creación de archivos .zip con los reportes compilados. Un ejemplo del resultado final se muestra en la siguiente imagen:
 
-Se expone únicamente las funciones que generan la automatización sin incluir la interfaz web. El código se encuentra en el archivo `funciones.py`.
+![Ejemplo de Reporte](imagenes/EjemploReporte.png)
+
+Se expone únicamente las funciones que generan la automatización, sin incluir la interfaz web. El código se encuentra en el archivo `funciones.py`. Por otro lado, la interfaz web se encuentra generada da como resultado el que se muestra en la siguiente imagen:
+
+![Interfaz Web](imagenes/EjemploInterfaz.png)
 
 ### Construido con
 
