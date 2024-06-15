@@ -1,4 +1,5 @@
 <!-- PROJECT SHIELDS -->
+
 [![Colaboradores][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Estrellas][stars-shield]][stars-url]
@@ -36,6 +37,7 @@ Se expone únicamente las funciones que generan la automatización, sin incluir 
 ## Descripción
 
 El proyecto incluye el siguiente código y lógica:
+
 - **Funciones principales**:
   - `reemplazar_datos(texto, df_revision, n)`: Reemplaza los marcadores de posición en un texto con valores específicos de un DataFrame.
   - `leer_archivo_revision(archivo_revision)`: Lee un archivo de revisión en formato Excel y genera un DataFrame.
@@ -45,10 +47,23 @@ En necesario tener instalado LaTeX para compilar los archivos a PDF.
 
 ### Pruebas
 
-El proyecto ha sido probado con Python 3.10 y las siguientes versiones de librerías:
-- Tex Live 2023
+El proyecto ha sido probado Django 4.2 sobre Python 3.10.12. Las librerías con su versión específica pueden ser encontradas en el archivo: `requirements.txt`. El despliegue web fue realizado sobre Ubuntu 22.04 con las siguientes instalaciones de TeXLive:
+
+- `texlive-base`
+- `texlive-binaries`
+- `texlive-fonts-extra-links`
+- `texlive-fonts-extra`
+- `texlive-fonts-recommended`
+- `texlive-lang-spanish`
+- `texlive-latex-base`
+- `texlive-latex-extra`
+- `texlive-latex-recommended`
+- `texlive-pictures`
+
+La plantilla HTML usada para el proyecto la puedes encontrar en: [Nice Admin - Free bootstrap admin HTML template](https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/)
 
 Errores reportados:
+
 - No se han reportado errores hasta el momento.
 
 ## Créditos
@@ -70,11 +85,12 @@ Escuela Politécnica Nacional\
 
 ## Licencia
 
-Distribuido bajo la licencia MIT. 
+Distribuido bajo la licencia MIT.
 
 [![MIT License][license-shield]][license-url]
 
 <!-- MARKDOWN LINKS & IMAGES -->
+
 [contributors-shield]: https://img.shields.io/github/contributors/alephsub0/ReportesCEV.svg?style=for-the-badge
 [contributors-url]: https://github.com/alephsub0/ReportesCEV/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/alephsub0/ReportesCEV.svg?style=for-the-badge

@@ -7,3 +7,6 @@ __pycache__/models.cpython-311.pyc
 __pycache__/views.cpython-311.pyc
 /migrations
 __pycache__/
+Seguimiento01/
+migrations/
+App/
