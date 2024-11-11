@@ -1,7 +1,8 @@
 # Módulos del script
 from django.shortcuts import render, HttpResponse
 from django.http import JsonResponse
-from django.views.decorators.http import require_http_methods
+from django.views.decorators.http import require_POST, require_GET
+from django.contrib.auth.decorators import login_required
 from .forms import FormularioSeguimientoAulas
 import pandas as pd
 from .reportes_cev import procesar_seguimiento
@@ -9,7 +10,6 @@ from .models import ModeloSeguimientoAulas
 from ServiciosReportesPUCE.settings import (
     MEDIA_ROOT,
     DIRECTORIO_TEMPORAL_REPORTES_CEV,
-    GRUPOS_SEGURIDAD,
 )
 import os
 from django.contrib import messages
@@ -17,15 +17,16 @@ from django.conf import settings
 import sys
 from ServiciosReportesPUCE.funciones import (
     obtener_usuario_id,
-    verificar_miembro_grupo_seguridad,
-    informacion_usuario
 )
 
-# Variables del script
-nombre_grupo_seg = "reportes_cev"
+# import decorator for login
+
 
 def generar_codigo():
     """
+
+    ¡Función interna!
+
     Genera un código único con la fecha y hora actual.
 
     Returns:
@@ -35,6 +36,18 @@ def generar_codigo():
 
 
 def elaborar_reportes(identificador_proceso, nombre_coordinador):
+    """
+        ¡Función interna!
+
+        Genera los reportes de seguimiento de aulas.
+
+    Args:
+        identificador_proceso (str): Identificador del proceso.
+        nombre_coordinador (str): Nombre del coordinador.
+
+    Returns:
+        dict: Respuesta con el estado de la generación de los reportes.
+    """
     # Obtenemos la ruta del archivo excel
     archivo = ModeloSeguimientoAulas.objects.get(
         IdProceso=identificador_proceso
@@ -131,9 +144,8 @@ def elaborar_reportes(identificador_proceso, nombre_coordinador):
         return respuesta
 
 
-@verificar_miembro_grupo_seguridad(grupo_seguridad=GRUPOS_SEGURIDAD[nombre_grupo_seg])
-@settings.AUTH.login_required(scopes="GroupMember.Read.All".split())
-@require_http_methods(["POST"])
+@login_required
+@require_POST
 def GenerarReportesSeguimiento(request, *, context):
 
     identificador_usuario = obtener_usuario_id(context)
@@ -158,12 +170,11 @@ def GenerarReportesSeguimiento(request, *, context):
         return JsonResponse(json_respuesta, safe=False)
 
 
-@verificar_miembro_grupo_seguridad(grupo_seguridad=GRUPOS_SEGURIDAD[nombre_grupo_seg])
-@settings.AUTH.login_required(scopes="GroupMember.Read.All".split())
-@require_http_methods(["GET"])
-def SeguimientoAulas(request, *, context):
-    
-    info_usr = informacion_usuario(context)
+@login_required
+@require_GET
+def SeguimientoAulas(
+    request,
+):
 
     formulario = FormularioSeguimientoAulas()
     return render(
@@ -171,26 +182,20 @@ def SeguimientoAulas(request, *, context):
         "ReportesCEV/SeguimientoAulas.html",
         {
             "formulario": formulario,
-            "nombre_usuario": info_usr["nombre_usuario"],
-            "grupos_pertenece": info_usr["grupos_pertenece"],
-            "grupos_seguridad": info_usr["grupos_seguridad"],
         },
     )
 
 
-@verificar_miembro_grupo_seguridad(grupo_seguridad=GRUPOS_SEGURIDAD[nombre_grupo_seg])
-@require_http_methods(["GET"])
-@settings.AUTH.login_required(scopes="GroupMember.Read.All".split())
-def DescargarReporteSeguimientoAulas(request, *, context, identificador_proceso):
-
-    info_usr = informacion_usuario(context)
-
-    identificador_usuario = obtener_usuario_id(context)
+@login_required
+@require_GET
+def DescargarReporteSeguimientoAulas(request, identificador_proceso):
 
     # Verificamos si el usuario que solicita la descarga es el mismo que generó el proceso
     UsuarioProceso = ModeloSeguimientoAulas.objects.get(
         IdProceso=identificador_proceso
     ).IdUsuario
+
+    identificador_usuario = request.user.id
 
     if identificador_usuario != UsuarioProceso:
         messages.error(request, "No tienes permiso para descargar este archivo")
@@ -221,9 +226,4 @@ def DescargarReporteSeguimientoAulas(request, *, context, identificador_proceso)
         return render(
             request,
             "ReportesCEV/SeguimientoAulas.html",
-            {
-                "nombre_usuario": info_usr["nombre_usuario"],
-                "grupos_pertenece": info_usr["grupos_pertenece"],
-                "grupos_seguridad": info_usr["grupos_seguridad"],
-            },
         )
